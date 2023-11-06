@@ -315,11 +315,11 @@ import argparse
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('run_name')
-    parser.add_argument('bs', default=50, type=int)
-    parser.add_argument('lr', default=1e-4, type=float)
-    parser.add_argument('steps', default=250000, type=int)
-    parser.add_argument('save_every', default=10000, type=int)
-    parser.add_argument('eval_every', default=10000, type=int)
+    parser.add_argument('--bs', default=50, type=int)
+    parser.add_argument('--lr', default=1e-4, type=float)
+    parser.add_argument('--steps', default=250000, type=int)
+    parser.add_argument('--save_every', default=10000, type=int)
+    parser.add_argument('--eval_every', default=10000, type=int)
     args = parser.parse_args
 
     trainer = trainer = Trainer(args.bs, args.lr, '/checkpoint/kaselby/%s' % args.run_name, 'lpips_exps/%s'% args.run_name)
