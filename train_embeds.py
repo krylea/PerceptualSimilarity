@@ -192,7 +192,7 @@ class Trainer():
         
         l = l.view(d0.size())
         
-        acc = self.compute_accuracy(d0, d1, l)
+        acc = self.compute_accuracy(d0, d1, l).mean()
         
         loss = self.loss(d0, d1, 2*l-1).mean()
         
@@ -224,7 +224,7 @@ class Trainer():
         torch.save(savedict, path)
         
     def load(self, path):
-        loaddict = torch.load(path)
+        loaddict = torch.load(path, map_location='cpu')
         self.model.load_state_dict(loaddict['model'])
         self.loss.net.load_state_dict(loaddict['loss'])
         step = loaddict['step']
@@ -252,7 +252,7 @@ class Trainer():
                 l_all[jmin:jmax] = l
         
         val_loss /= N
-        val_acc = self.compute_accuracy(d0_all, d1_all, l_all)
+        val_acc = self.compute_accuracy(d0_all, d1_all, l_all).mean()
         
         return val_loss, val_acc
     
@@ -261,7 +261,7 @@ class Trainer():
         for k, v in self.val_datasets.items():
             val_loss, val_acc = self.validate(v)
             val_results[k+'/loss'] = val_loss.item()
-            val_results[k+'/acc'] = val_acc
+            val_results[k+'/acc'] = val_acc.item()
         return val_results
     
     def train(self, steps, save_every=5000, eval_every=5000):
@@ -286,8 +286,8 @@ class Trainer():
                     self.clamp_weights()
 
                     logdict={
-                        'train/loss': loss,
-                        'train/acc': acc
+                        'train/loss': loss.item(),
+                        'train/acc': acc.item()
                     }
                     
                     if step - self.batch_size < next_eval and step >= next_eval:
