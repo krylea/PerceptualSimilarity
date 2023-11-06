@@ -320,7 +320,7 @@ if __name__ == '__main__':
     parser.add_argument('--steps', default=250000, type=int)
     parser.add_argument('--save_every', default=10000, type=int)
     parser.add_argument('--eval_every', default=10000, type=int)
-    args = parser.parse_args
+    args = parser.parse_args()
 
     trainer = trainer = Trainer(args.bs, args.lr, '/checkpoint/kaselby/%s' % args.run_name, 'lpips_exps/%s'% args.run_name)
     trainer.train(args.steps, eval_every=args.eval_every, save_every=args.save_every)
